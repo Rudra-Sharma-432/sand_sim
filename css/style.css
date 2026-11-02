@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #323232;
+  color: #eee;
+  font-family: monospace;
+  overflow: hidden;
+}
+
+#container {
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  height: 100vh;
+}
+
+#UI {
+  background: #282828;
+  border-radius: 0px 10px 10px 0px;
+  border: #777 1px solid;
+  text-align: center;
+}
+
+h1 {
+  color: #fff;
+  font-size: 26px;
+  margin-top: 2px;
+}
+
+hr {
+  border: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+p {
+  font-size: 16px;
+}
+
+canvas {
+  background: #000;
+  width: 75%;
+  margin: 10px;
+  border-radius: 8px;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  /* align-items: center; */
+}
