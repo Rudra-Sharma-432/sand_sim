@@ -13,9 +13,8 @@ body {
 
 #container {
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
   height: 100vh;
+  overflow: auto; /* scroll if the window is smaller than the grid */
 }
 
 #UI {
@@ -23,6 +22,8 @@ body {
   border-radius: 0px 10px 10px 0px;
   border: #777 1px solid;
   text-align: center;
+  flex: 1;          /* takes the remaining space next to the canvas */
+  min-width: 220px;
 }
 
 h1 {
@@ -42,9 +43,10 @@ p {
 
 canvas {
   background: #000;
-  width: 75%;
   margin: 10px;
   border-radius: 8px;
+  flex-shrink: 0;           /* flex layout must never squeeze the canvas */
+  align-self: flex-start;   /* no vertical stretching; JS sets the exact size */
 }
 
 #controls {
@@ -52,5 +54,4 @@ canvas {
   flex-direction: column;
   gap: 5px;
   padding: 10px;
-  /* align-items: center; */
 }

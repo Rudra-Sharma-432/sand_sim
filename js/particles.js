@@ -19,7 +19,7 @@ class Sand {
   }
 
   update() {
-    if (this.x < rows - 1) {
+    if (this.y < rows - 1) {
       // console.log("first if clear")
 
       let thisCellIndex = this.y * rows + this.x;
@@ -32,7 +32,7 @@ class Sand {
         // console.log("2nd if clear")
 
         CELLS[thisCellIndex] = new Cell(this.x, this.y, "empty");
-        CELLS[thisCellIndex + cols] = new Cell(this.x, this.y, "sand");
+        CELLS[thisCellIndex + cols] = new Cell(this.x, this.y + 1, "sand");
       }
     }
   }

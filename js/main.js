@@ -1,40 +1,21 @@
-const canvas = document.getElementById("myCanvas")
-const ctx = canvas.getContext("2d");
-
-function resizeAndSharpenCanvas() {
-  const dpr = window.devicePixelRatio || 1;
-
-  // 1. Get the exact width and height calculated by your CSS (width: 75%, margins, etc.)
-  const rect = canvas.getBoundingClientRect();
-
-  // 2. Set the internal resolution multiplied by the screen sharpness
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-
-  // 3. Reset the context scale back to normal so your coordinate mapping matches CSS pixels
-  ctx.scale(dpr, dpr);
-}
-
-// 5. Initialize on load and hook it up to window resizing
-resizeAndSharpenCanvas();
-window.addEventListener("resize", resizeAndSharpenCanvas);
-
-
 //: ---- Variables ---- ://
-// const cellSize = 110;
-// let rows = Math.floor(canvas.height / cellSize);
-// let cols = Math.floor(canvas.width / cellSize);
+// (canvas, ctx, cols, rows, cellSize now come from canvas.js)
 let isDragging = false;
-
-const cellCountInRow = 10;
-let cols = cellCountInRow;
-let cellSize = Math.floor(canvas.width / cols);
-let rows = Math.floor(canvas.height / cellSize);
+let paused = false;
 
 const CELLS = [];
+function reset() {
+  for (let i = 0; i < rows * cols; i++) {
+    CELLS.push(new Cell(Math.floor(i / cols), i % cols, "empty"));
+  }
 
-for (let i = 0; i < rows * cols; i++) {
-  CELLS.push(new Cell(Math.floor(i / cols), i % cols, "empty"));
+  console.log("done reseting");
+}
+reset();
+
+function pauseToggle() {
+  paused = !paused;
+  console.log(`paused: ${paused}`);
 }
 
 canvas.addEventListener("mousedown", function (event) {
@@ -52,40 +33,31 @@ window.addEventListener("mouseup", function () {
 });
 
 function drawAtMousePosition(event) {
-  const rect = canvas.getBoundingClientRect();
+  // canvas.js converts the mouse position into a grid cell (or null if outside)
+  const cell = getCellFromMouse(event);
+  if (!cell) return;
 
-  const mouseX = event.clientX - rect.left;
-  const mouseY = event.clientY - rect.top;
-
-  cellX = Math.floor(mouseX / cellSize);
-  cellY = Math.floor(mouseY / cellSize);
-  
-  // ctx.fillStyle = "red";
-  // ctx.beginPath();
-  // ctx.arc(cellX, cellY, 4, 0, Math.PI * 2);
-  // ctx.fill();
-  
-  // CELLS.push(new Cell(cellX, cellY, "sand"));
-  index = cellY * rows + cellY;
-
-  CELLS[index] = new Cell(cellX, cellY, "sand");
-
-
+  const index = cell.y * cols + cell.x;
+  CELLS[index] = new Cell(cell.x, cell.y, "sand");
 }
 
 function update() {
-  for (let i = 0; i < CELLS.length; i++) {
+  for (let i = CELLS.length - 1; i >= 0; i--) {
     CELLS[i].update()
   }
 }
 
 function render () {
+  clearCanvas(); // canvas.js: erase previous frame
+  drawGrid();    // canvas.js: grid lines + border
+
   for (let i = 0; i < CELLS.length; i++) {
     CELLS[i].particle.draw();
   }
 }
 
 function mainLoop() {
+  if (!paused) {
     // 1. Update your main logic (positions, collisions, etc.)
     update();
 
@@ -94,8 +66,8 @@ function mainLoop() {
 
     // 3. Request the next frame to keep the loop going
     requestAnimationFrame(mainLoop);
+    }
 }
 
 // Start the main loop
 requestAnimationFrame(mainLoop);
-
