@@ -3,6 +3,28 @@
 let isDragging = false;
 let paused = false;
 
+let particleMode = 1;
+
+document.addEventListener('keydown', (event) => {
+  console.log(event.key);
+
+  if (event.key == "1") {
+    // Sand
+    particleMode = 1;
+
+  } else if (event.key == "2") {
+    // Water
+    particleMode = 2;
+
+  } else if (event.key == "3") {
+    // Mud
+    particleMode = 3;
+    
+  } else {
+    particleMode = 0;
+  }
+});
+
 const CELLS = [];
 function reset() {
   for (let i = 0; i < rows * cols; i++) {
@@ -38,7 +60,14 @@ function drawAtMousePosition(event) {
   if (!cell) return;
 
   const index = cell.y * cols + cell.x;
-  CELLS[index] = new Cell(cell.x, cell.y, "sand");
+
+  if (particleMode == 1) {
+    CELLS[index] = new Cell(cell.x, cell.y, "sand");
+
+  } else if(particleMode == 2) {
+    CELLS[index] = new Cell(cell.x, cell.y, "water");
+
+  }
 }
 
 function update() {
@@ -47,7 +76,7 @@ function update() {
   }
 }
 
-function render () {
+function render() {
   clearCanvas(); // canvas.js: erase previous frame
   drawGrid();    // canvas.js: grid lines + border
 
@@ -61,12 +90,14 @@ function mainLoop() {
     // 1. Update your main logic (positions, collisions, etc.)
     update();
 
-    // 2. Render the graphics (draw shapes, clear canvas)
-    render();
+  }
 
-    // 3. Request the next frame to keep the loop going
-    requestAnimationFrame(mainLoop);
-    }
+  // 2. Render the graphics (draw shapes, clear canvas)
+  render();
+
+  // 3. Request the next frame to keep the loop going
+  requestAnimationFrame(mainLoop);
+
 }
 
 // Start the main loop
