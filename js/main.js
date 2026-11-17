@@ -19,9 +19,15 @@ document.addEventListener('keydown', (event) => {
   } else if (event.key == "3") {
     // Mud
     particleMode = 3;
-    
-  } else {
+
+  } else if (event.key == "9") {
+    // Solid
+    particleMode = 9;
+
+  } else if (event.key == "0") {
+    // Empty
     particleMode = 0;
+
   }
 });
 
@@ -66,6 +72,15 @@ function drawAtMousePosition(event) {
 
   } else if(particleMode == 2) {
     CELLS[index] = new Cell(cell.x, cell.y, "water");
+
+  } else if(particleMode == 3) {
+    CELLS[index] = new Cell(cell.x, cell.y, "mud");
+
+  } else if(particleMode == 9) {
+    CELLS[index] = new Cell(cell.x, cell.y, "solid");
+
+  } else if(particleMode == 0) {
+    CELLS[index] = new Cell(cell.x, cell.y, "empty");
 
   }
 }

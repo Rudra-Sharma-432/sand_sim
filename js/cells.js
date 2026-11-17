@@ -12,10 +12,12 @@ class Cell {
       this.particle = new Water(x, y);
     } else if (type == "mud") {
       this.particle = new Mud(x, y);
-    } else {
+    } else if (type == "solid") {
+      this.particle = new Solid(x, y);
+    } else if (type == "empty") {
       this.particle = new Empty(x, y);
     }
-  
+
   }
 
   update() {
